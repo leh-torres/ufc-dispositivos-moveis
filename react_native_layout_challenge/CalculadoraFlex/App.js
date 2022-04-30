@@ -18,8 +18,6 @@ export default function App() {
   
   const addDigito=(d)=>{
 
-    alert(estados.operado)
-
     if((d == '+' || d == '-' || d == '/' || d === '*') && estados.opera){
       estados.valorTela = estados.resultado
       estados.resultado = 0
