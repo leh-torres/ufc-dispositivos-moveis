@@ -4,18 +4,32 @@ import { FlatList, SafeAreaView, StyleSheet, Text, TextInput, TouchableOpacity, 
 import axios from 'axios'
 
 export default function App() {
-  const [books, setBooks] = useState({})
+  const [books, setBooks] = useState(new Object())
   const [searchBooks, setSearchBooks] = useState('')
 
   const getBooks = async ()=>{
     console.log(searchBooks)
     const {data} = await axios.get(
-      'https://hn.algolia.com/api/v1/search?query={searchBooks}',
+      'https://hn.algolia.com/api/v1/search?query=' + {searchBooks},
       )
-    setBooks(data)
-    console.log(data)
+    setBooks(Object.values(data))
+    console.log(Object.values(data))
     
   }
+
+  const item = ({title, author, url}) =>{
+    <View style={styles.livros}>
+      <View>
+        <Text style={styles.txt}>Autor: {author}</Text>
+        <Text style={styles.txt}>Título: {title}</Text>
+        <Text style={styles.txt}>Url: {url}</Text>
+      </View>
+    </View>
+  }
+
+  const renderItem = ({item}) => (
+    <item title={item.title} author={item.author} url={item.url}/>
+  )
 
   return (
     <SafeAreaView style={styles.container}>
@@ -30,13 +44,14 @@ export default function App() {
             <Text style={styles.btn_txt}>Buscar</Text>
         </TouchableOpacity>
       </View>
-      <View style={styles.livros}>
-        <View>
-          <Text style={styles.txt}>Autor: {books.author}</Text>
-          <Text style={styles.txt}>Título: {books.title}</Text>
-          <Text style={styles.txt}>Url: {books.url}</Text>
-        </View>
-      </View>
+     
+      <FlatList 
+        data={books}
+        renderItem={renderItem}
+        keyExtractor={function(item){
+          return 'Autor: ' + item.author + '\n Titulo: ' + item.title +
+          '\nUrl: ' + item.url
+        }}/>
     </SafeAreaView>
   );
 }

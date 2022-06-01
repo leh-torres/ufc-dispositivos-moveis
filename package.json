@@ -1,0 +1,7 @@
+{
+  "dependencies": {
+    "expo-font": "^10.1.0",
+    "native-base": "v2",
+    "react-native-easy-grid": "^0.2.2"
+  }
+}
